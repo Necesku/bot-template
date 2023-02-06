@@ -52,7 +52,7 @@ config.json
 data/*
 !data/dataManager.js
 cmds/*
-!cmds/template.js
+!cmds/test.js
 
 # Optional npm cache directory
 .npm
