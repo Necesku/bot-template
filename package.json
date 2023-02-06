@@ -1,0 +1,14 @@
+{
+  "name": "o.o",
+  "version": "7.1.2023",
+  "description": "Discord bot named o.o",
+  "main": "main.js",
+  "scripts": {
+    "start": "echo Starting... && node main.js"
+  },
+  "author": "Necesku#2040",
+  "license": "ISC",
+  "dependencies": {
+    "eris": "^0.17.1"
+  }
+}
