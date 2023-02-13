@@ -51,8 +51,6 @@ typings/
 config.json
 data/*
 !data/dataManager.js
-cmds/*
-!cmds/test.js
 
 # Optional npm cache directory
 .npm
