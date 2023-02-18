@@ -6,19 +6,21 @@ const data = {
 
 async function run(interaction, bot) {
 
+    const author = interaction.member;
+
     interaction.createMessage({
-        embed: {
+        embeds: [{
             title: "Test",
             description: `This is test command to check you correctly configured bot. As you see, the bot is working correctly :)`,
             author: { // Author property
-                name: interaction.member.user.username,
-                icon_url: interaction.member.avatarURL
+                name: `${author.user.username}#${author.user.discriminator}`,
+                iconURL: author.avatarURL()
             },
             color: 0x5AE441,
             footer: {
                 text: "lolz"
             }
-        }
+        }]
     });
 
 }

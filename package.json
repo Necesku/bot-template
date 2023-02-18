@@ -1,7 +1,7 @@
 {
-  "name": "o.o",
-  "version": "7.1.2023",
-  "description": "Discord bot named o.o",
+  "name": "bot-template",
+  "version": "18.02.2023",
+  "description": "Discord Bot Template",
   "main": "main.js",
   "scripts": {
     "start": "echo Starting... && node main.js"
@@ -9,6 +9,6 @@
   "author": "Necesku#2040",
   "license": "ISC",
   "dependencies": {
-    "eris": "^0.17.1"
+    "oceanic.js": "^1.5.0"
   }
 }

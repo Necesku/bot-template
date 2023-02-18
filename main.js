@@ -1,5 +1,6 @@
-const Eris = require("eris");
-const { Constants } = require("eris");
+const { Client } = require("oceanic.js");
+const oceanic = require("oceanic.js");
+const { Constants } = require("oceanic.js");
 const { guildID, statusChannel, statusUpdateDelay, token } = require("./config.json");
 const path = require("path");
 const dataManager = require("./data/dataManager");
@@ -7,8 +8,15 @@ const fs = require("fs");
 const iconurl = "https://media.discordapp.net/attachments/1046459312068894732/1063491993960976464/o.o_1.png?width=572&height=572";
 // ^^^ change iconurl to your bot icon url
 
-const bot = new Eris(token,
-    { 
+function fix(str, length) {
+    let spacesToAdd = length - str.length;
+    if (spacesToAdd <= 0) return str;
+    return str.padEnd(length-1, " ") + "|";
+}
+
+const bot = new Client(
+    {
+        auth: `Bot ${token}`,
         intents: [
             Constants.Intents.guilds
         ]   
@@ -18,23 +26,24 @@ bot.on("ready", async () => {
 
     const commandsPath = path.join(__dirname, 'cmds');
     const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+    console.log(" - COMMANDS ------------------------------------");
+    console.log(" | Removing commands...                        |");
+    bot.application.bulkEditGuildCommands(guildID, []);
+    console.log(" | Done.                                       |");
 
-    const commands = await bot.getCommands();
-
-    if (!commands.length) {
-        commandFiles.forEach(cmd => {
-            const cmdFinalPath = path.join(commandsPath, cmd);
-            const cmdFinalData = require(cmdFinalPath).data;
-            console.log("Trying to register command: " + cmdFinalData.name);
-            bot.createGuildCommand(guildID, {
-                name: cmdFinalData.name,
-                description: cmdFinalData.description,
-                options: cmdFinalData.options
-            });
+    commandFiles.forEach(cmd => {
+        const cmdFinalPath = path.join(commandsPath, cmd);
+        const cmdFinalData = require(cmdFinalPath).data;
+        const msg0 = " | Trying to register command: " + cmdFinalData.name;
+        const msgFinal = fix(msg0, 48);
+        console.log(msgFinal);
+        bot.application.createGuildCommand(guildID, {
+            name: cmdFinalData.name,
+            description: cmdFinalData.description,
+            options: cmdFinalData.options
         });
-    }
-
-    bot.editStatus("idle", { name: "If I just could get a girlfriend..." });
+    });
+    console.log(" -----------------------------------------------");
     // setInterval(() => {
     //     bot.getMessages(statusChannel, { limit: 1 }).then(msgs => {
     //         const msg = msgs[0];
@@ -72,7 +81,7 @@ bot.on("error", (err) => {
 });
 
 bot.on("interactionCreate", async (interaction) => {
-    if(interaction instanceof Eris.CommandInteraction) {
+    if(interaction instanceof oceanic.CommandInteraction) {
         const cmdPath = path.join(__dirname, "cmds", interaction.data.name+".js");
         const cmdExists = fs.existsSync(cmdPath);
         if (cmdExists) {
